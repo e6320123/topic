@@ -12,7 +12,7 @@ $("#toTop").on("click", "img", function () {
             }
         }, 1);
 })
-
+// test
 //取出現在捲軸值
 var scrollValue = 0;
 //顯現 #toTop
