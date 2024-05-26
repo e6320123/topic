@@ -1,8 +1,43 @@
+var list ='[' +
+    '{"inx":"0" ,"platform":"Online", "name":"魔獸世界：決戰艾澤拉斯" , "imgsrc":"wow.png", "imgsize":"120x120"},' +
+    '{"inx":"1" ,"platform":"PC",     "name":"帝國：全軍破敵" ,        "imgsrc":"etw.jpg", "imgsize":"100x130"},' +
+    '{"inx":"2" ,"platform":"PC",    "name":"刺客教條 2" ,             "imgsrc":"ac2.jpg", "imgsize":"100x130"},' +
+    '{"inx":"3" ,"platform":"PC",    "name":"全軍破敵：三國" ,         "imgsrc":"ttw.jpg", "imgsize":"100x130"},' +
+    '{"inx":"4" ,"platform":"PS4",    "name":"惡靈古堡 2 重製版" ,      "imgsrc":"bio2.png", "imgsize":"100x130"},' +
+    '{"inx":"5" ,"platform":"Online", "name":"暗黑破壞神 3：奪魂之鐮" , "imgsrc":"d3.png", "imgsize":"120x120"},' +
+    '{"inx":"6" ,"platform":"PS4",    "name":"惡魔獵人 5" ,            "imgsrc":"dmc5.jpg", "imgsize":"100x130"},' +
+    '{"inx":"7" ,"platform":"PS4",    "name":"漫威蜘蛛人" ,            "imgsrc":"spm.png",  "imgsize":"100x130"},' +
+    '{"inx":"8" ,"platform":"NS",    "name":"勇者鬥惡龍 XI S 尋覓逝去的時光 – Definitive Edition" ,"imgsrc":"dq.png", "imgsize":"100x130"},' +
+    '{"inx":"9","platform":"PS4",    "name":"魔物獵人 世界" ,         "imgsrc":"mons.png","imgsize":"100x130" },'+
+    '{"inx":"10","platform":"PC",    "name":"巫師 3：狂獵" ,          "imgsrc":"witch.jpg","imgsize":"100x130" },'+
+    '{"inx":"11","platform":"NS",    "name":"寶可夢 劍" ,             "imgsrc":"poke.png","imgsize":"100x130" },'+
+    '{"inx":"12","platform":"NS",    "name":"薩爾達傳說 曠野之息" ,    "imgsrc":"zelda.png","imgsize":"100x130" },'+
+    '{"inx":"13","platform":"Online", "name":"佩里亞編年史" ,          "imgsrc":"peria.jpg","imgsize":"120x120" },'+
+    '{"inx":"14" ,"platform":"NS",     "name":"哆啦 A 夢 牧場物語" ,    "imgsrc":"dora.png", "imgsize":"100x130"}]';
+
+function gener_game_btn(aobj) {
+    let xmp = document.getElementById("smallFrame_xmp").innerHTML;
+    xmp = xmp.replace("*inx*", aobj.inx);
+    xmp = xmp.replace("*platform*", aobj.platform);
+    xmp = xmp.replace("*name*", aobj.name);
+    xmp = xmp.replace("*imgsrc*", aobj.imgsrc);
+    xmp = xmp.replace("*imgsize*", aobj.imgsize);
+    return xmp;
+}
+var obj = JSON.parse(list);
+var lcnt ='<p style="border-bottom:2px solid gray;">遊戲搜索欄</p>';
+for (let i = 0; i < obj.length; i++) {
+    lcnt += gener_game_btn(obj[i]);
+}
+document.getElementById("L_content").innerHTML = lcnt;
+
+var L_content = document.getElementById("L_content").innerHTML;
+var R_content = document.getElementById("R_content").innerHTML;
+
 //toTop上捲動作
 $("#toTop").on("click", "img", function () {
     var speed = scrollValue;
-    var set = "";
-    set =
+    var set = 
         setInterval(function () {
             speed -= 17;
             console.log(speed);
@@ -12,7 +47,6 @@ $("#toTop").on("click", "img", function () {
             }
         }, 1);
 })
-// test
 //取出現在捲軸值
 var scrollValue = 0;
 //顯現 #toTop
