@@ -681,91 +681,69 @@ $("#L_content").on("click","img", function () {
     switch (tet) {
         case "0":
             $("#R_content").append(cnt0);
-            loadTuku();
             break;
         case "1":
             $("#R_content").append(cnt1);
-            loadTuku();
             break;
         case "2":
             $("#R_content").append(cnt2);
-            loadTuku();
             break;
         case "3":
             $("#R_content").append(cnt3);
-            loadTuku();
             break;
         case "4":
             $("#R_content").append(cnt4);
-            loadTuku();
             break;
         case "5":
             $("#R_content").append(cnt5);
-            loadTuku();
             break;
         case "6":
             $("#R_content").append(cnt6);
-            loadTuku();
             break;
         case "7":
             $("#R_content").append(cnt7);
-            loadTuku();
             break;
         case "8":
             $("#R_content").append(cnt8);
-            loadTuku();
             break;
         case "9":
             $("#R_content").append(cnt9);
-            loadTuku();
             break;
         case "10":
             $("#R_content").append(cnt10);
-            loadTuku();
             break;
         case "11":
             $("#R_content").append(cnt11);
-            loadTuku();
             break;
         case "12":
             $("#R_content").append(cnt12);
-            loadTuku();
             break;
         case "13":
             $("#R_content").append(cnt13);
-            loadTuku();
             break;
         case "14":
             $("#R_content").append(cnt14);
-            loadTuku();
             break;
         case "15":
             $("#R_content").append(cnt15);
-            loadTuku();
             break;
         case "16":
             $("#R_content").append(cnt16);
-            loadTuku();
             break;
         case "17":
             $("#R_content").append(cnt17);
-            loadTuku();
             break;
         case "18":
             $("#R_content").append(cnt18);
-            loadTuku();
             break;
         case "19":
             $("#R_content").append(cnt19);
-            loadTuku();
             break;
         case "20":
             $("#R_content").append(cnt20);
-            loadTuku();
             break;
         case "21":
             $("#R_content").append(cnt21);
-            loadTuku();
             break;
         default:
             break;

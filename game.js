@@ -61,15 +61,29 @@ $(window).scroll(function () {
         $("#toTop").css("visibility", "hidden");
     }
 })
+ 
+//    ----------------------tuku----------------------------
+  
+$(document).on("click", ".tuku_down img", function () {
+    let small_src = $(this).attr("src");
+    $(".tuku_up>img").prop("src", small_src);
+});
 
-$(window).click(function () {
-    var w2 = event.clientX;
-    var w3 = event.clientY; //可見高  非所有捲軸的高
-})
+var fullScreen_src="";
+$(document).on("click",".tuku_up img", function () {
+    fullScreen_src = $(this).attr("src");
+    if ($(this).attr("class")=="smallScreen") {
+        $(this).attr("class","fullScreen");
+    } else {
+        $(this).attr("class","smallScreen");
+    }
+});
+
+
+$(document).on("click", "#r", img2R)
+$(document).on("click", "#l", img2L)
 
 //    ----------------------tuku----------------------------
-
-// --------------------載入tuku後都需再跑一遍 loadTuku();--------------------
 function loadTuku() {
     var tuku_elm = "";
     var tukuArry = [];
@@ -84,226 +98,133 @@ function loadTuku() {
         $(".tuku_down").prepend(tuku_elm);
         tukuArry.pop();
     }
-    $(".tuku_down img").css("margin", "2px");
+    $(".tuku_down img").css("margin", "3px");
 }
-
-// --------------------載入tuku後都需再跑一遍 loadTuku();--------------------
-loadTuku();
-
-var tuku_up_index=-1;
-var v="";
-
-$(document).on("click", ".tuku_down img", function () {
-    v = $(this).attr("src");
-    $(".tuku_up>img").prop("src", v);
-    tuku_up_index=$(this).index();  
-    // console.log(tuku_up_index);
-        //取得小圖index
-});
-var trans_src="";
-$(document).on("click", ".tuku_up img", function () {
-    trans_src = $(this).attr("src");
-
-})
-
-
+loadTuku()
 var arry = [];
 var img_elm = "";
-var flag = true; //if通行開關 ,避免連續點選造成錯誤
 
-
-    $(document).on("click", "#r", function () {
-    if ($(".tuku_down img").eq(5).attr("class") != "end" && flag) { //最後一張圖class不等於end
-        flag = false;
-        img_elm = $("<p>").append($(".tuku_down img").eq(0).clone()).html(); //取<img>元素     
+function img2L() {
+    //第一張圖class不等於star
+    if ($(".tuku_down img").eq(0).attr("class") != "star") { 
+        img_elm = arry.pop();
+        $(".tuku_down").prepend(img_elm);
+    }
+}
+function img2R() {
+    //最後一張圖class不等於end
+    if ($(".tuku_down img").eq(5).attr("class") != "end") { 
+        //取<img>元素
+        img_elm = $("<p>").append($(".tuku_down img").eq(0).clone()).html();      
         arry.push(img_elm);
         $(".tuku_down img").eq(0).remove();
-        flag = true;
     }
-})
-var flag2 = true; //一進if就關 ,避免連續點選造成錯誤
-$(document).on("click", "#l", function () {
-
-    if ($(".tuku_down img").eq(0).attr("class") != "star" && flag2) { //第一張圖class不等於star
-        flag = false;
-        img_elm = arry.pop();
-        $(".tuku_down").prepend(img_elm);// $(".tuku_down img").eq(0).css("margin","0px 3px 0px 0px");  
-        flag = true;
-    }
-})
-
-var bs = 0;
-$(document).on("click",".tuku_up img", function () {
-    if (bs == 0) {
-        bs++;
-        $(this).removeClass("smallScreen");
-        $(this).addClass("fullScreen");
-
-    } else {
-        bs--;
-        $(this).removeClass("fullscreen");
-        $(this).addClass("smallScreen");
-    }
-});
-
-//    ----------------------tuku----------------------------
-
-
-
-
-
+}  
 //------------------全螢幕控制---------------------------
-var c=0;
 $("body").keydown(function () {
-    
-   
-    if (bs == 1) {
-        var pattID =/^img.*g$/;
-        if (window.event.keyCode == 37 && pattID.test(trans_src)) {//左
-            
-            //------------------------------修到剩數字 
-            var t_i = trans_src.indexOf('.');
-            var t_jpg = trans_src.substring(t_i,t_i+4);
-            var t_l = trans_src.lastIndexOf('/');
-            var t_img= trans_src.substring(0,t_l+1);
-            var pattID2= /\d{2}/;
-           if(pattID2.test(c)){
-            c = trans_src.substr(t_l+1,2);
-           }else{
-            c = trans_src.substr(t_l+1,1);
-           }
+    if (event.key == "ArrowLeft") {
+        img2L();
+    }
+    if (event.key == "ArrowRight") {
+        img2R();
+    }
+})
 
-            
-           
-           //------------------------------修到剩數字
-           c=Number(c);
-           if(c!=1 ){
-                c--;
-                trans_src=String(c);
-                trans_src=t_img+trans_src+t_jpg;
-                $(".tuku_up>img").prop("src", trans_src);
-                }
-            
+var num=0;
+$("body").keydown(function () {
+    if ($(".tuku_up img").attr("class")=="fullScreen") {
+        //------------------------------修到剩數字 
+        let t_i = fullScreen_src.indexOf('.');
+        let t_jpg = fullScreen_src.substring(t_i,t_i+4);
+        let t_l = fullScreen_src.lastIndexOf('/');
+        let t_img= fullScreen_src.substring(0,t_l+1);
+        if(/\d{2}/.test(num)){
+            num = fullScreen_src.substring(t_l+1,t_l+3);
+        }else{
+            num = fullScreen_src.substring(t_l+1,t_l+2);
+        }
+        // img/mons/1.jpg
+        //------------------------------修到剩數字
+        num=Number(num);
+        if (event.key == "ArrowLeft" && num!=1) {
+           num--;
         } 
-        if (window.event.keyCode == 39 && pattID.test(trans_src)) {//右
-
-            //------------------------------修到剩數字 
-            var t_i = trans_src.indexOf('.');
-            var t_jpg = trans_src.substring(t_i,t_i+4);
-            var t_l = trans_src.lastIndexOf('/');
-            var t_img= trans_src.substring(0,t_l+1);
-            var pattID3= /\d{2}/;
-           if(pattID3.test(c)){
-            c = trans_src.substr(t_l+1,2);
-           }else{
-            c = trans_src.substr(t_l+1,1);
-           }
-            
-            console.log(c);
-           //------------------------------修到剩數字
-           c=Number(c);
-           if(trans_src!=$(".end").attr("src") ){
-                c++;
-                trans_src=String(c);
-                trans_src=t_img+trans_src+t_jpg;
-                $(".tuku_up>img").prop("src", trans_src);
-                }
-
+        if (event.key == "ArrowRight" && fullScreen_src!=$(".end").attr("src")) { 
+           num++;
         }
-
-    }console.log(trans_src);
-})
-
-// 左邊
-
-$("body").keydown(function () {
-    // if (bs == 0) {
-        if (window.event.keyCode == 37) {
-            if ($(".tuku_down img").eq(0).attr("class") != "star" && flag2) { //第一張圖class不等於star
-                flag = false;
-                img_elm = arry.pop();
-                $(".tuku_down").prepend(img_elm);
-                flag = true;
-            }
-        }
-    // }
-})
-
-//右邊
-$("body").keydown(function () {
-    // if (bs == 0) {
-        if (window.event.keyCode == 39) {
-            if ($(".tuku_down img").eq(5).attr("class") != "end" && flag) { //最後一張圖class不等於end
-                flag = false;
-                img_elm = $("<p>").append($(".tuku_down img").eq(0).clone()).html(); //取<img>元素     
-                arry.push(img_elm);
-                $(".tuku_down img").eq(0).remove();
-                flag = true;
-            }
-        }
-    // }
-})
-
-//bs==0  smallScreen
-//bs==1  fullScreen
-
-
-
-// $("body").click(function(){
-//     console.log(tuku_up_index);
-// })
-// 左邊
-$("body").keydown(function () {
-    // if (bs == 1) {
-    //     if (window.event.keyCode == 37) {
-            
-    //         tuku_up_index--;
-    //         // if(tuku_up_index>-1){
-    //        var newSrc= $(".tuku_down img").eq(tuku_up_index).attr("src")
-    //        console.log(tuku_up_index);
-           
-    //        console.log(newSrc);
-           
-    //         $("tuku_up img").attr("src",newSrc);
-
-          
-    //     }
-    // }
-    if ($(".fullScreen").attr("src") == $(".tuku_down img").eq(0).attr("src")) {
-        if (window.event.keyCode == 37) {
-            if ($(".tuku_down img").eq(0).attr("class") != "star" && flag2) { //第一張圖class不等於star
-                flag = false;
-                img_elm = arry.pop();
-                $(".tuku_down").prepend(img_elm);
-                flag = true;
-            }
-        }
+        fullScreen_src = t_img + String(num) + t_jpg;
+        $(".tuku_up>img").prop("src", fullScreen_src);
     }
 })
-//右邊
-$("body").keydown(function () {
-    // if (bs == 1) {
-    //     if (window.event.keyCode == 39) {
-    //         tuku_up_index++;
-    //         if(tuku_up_index>-1){
-    //        var newSrc= $(".tuku_down img").eq(tuku_up_index).attr("src")
-    //         $("tuku_up img").attr("src",newSrc);
-            
-    //       }
 
-    //     }
-    // }
-    if ($(".fullScreen").attr("src") == $(".tuku_down img").eq(5).attr("src")) {
-        if (window.event.keyCode == 39) {
-            if ($(".tuku_down img").eq(5).attr("class") != "end" && flag) { //最後一張圖class不等於end
-                flag = false;
-                img_elm = $("<p>").append($(".tuku_down img").eq(0).clone()).html(); //取<img>元素     
-                arry.push(img_elm);
-                console.log(arry);
-                $(".tuku_down img").eq(0).remove();
-                flag = true;
-            }
-        }
+//------------------頁面切換搜索---------------------------
+
+
+function shuffle(arr) {
+    let i,j,temp;
+    for (i = arr.length - 1; i > 0; i--) {
+        j = Math.floor(Math.random() * (i + 1));
+        temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
     }
+    return arr;
+};
+//搜索功能
+function search() {
+    $("#L_content").empty();
+    var keyArry =[];
+    var ch = $("#search>input").val();
+    for (var i = 0; i < obj.length; i++) {
+        var game = String(obj[i].name);
+        if (game.indexOf(ch) > -1&&ch!="") {
+            keyArry.push(gener_game_btn(obj[i])) ;
+        }
+    } 
+    shuffle(keyArry);
+    $("#L_content").append(`<p style="border-bottom:2px solid gray;" >遊戲搜索欄</p>`);   
+    for (var i = 0; i < keyArry.length; i++) {  
+        let result = keyArry.pop();
+       $("#L_content").append(result);  
+    }
+};
+
+$("#search>img").click(search) 
+$("#search>input").keydown(function () {
+    if (event.key =="Enter"){
+        search();
+    } 
+})
+
+function navShowL(search_platform){
+    let result = "";
+    for (var i = 0; i < obj.length; i++) {
+        if (obj[i].platform == search_platform) {    
+            result += gener_game_btn(obj[i]);
+    }
+ } 
+ $("#L_content").empty();
+ $("#L_content").append(`<p style="border-bottom:2px solid gray;" >遊戲搜索欄</p>`);
+ $("#L_content").append(result);
+}
+ 
+$("ul>li").eq(1).click(function () {
+    navShowL("Online");
+})
+$("ul>li").eq(2).click(function () {
+    navShowL("PC");
+})
+$("ul>li").eq(3).click(function () {
+    navShowL("PS4");
+})
+$("ul>li").eq(4).click(function () {  
+    navShowL("NS");
+})
+
+$("ul>li").eq(0).click(function () {
+    $("#L_content").empty();
+    $("#L_content").append(L_content);
+    $("#R_content").empty();
+    $("#R_content").append(R_content);
 })
 
